@@ -119,7 +119,9 @@ public class Settings{
 	}
 	@Override
 	public boolean equals(Object tmp){
-		return true;
+		if(tmp instanceof Settings)
+			return ((this.toString()).equals(tmp.toString()));   
+    	return false;
 	}
 
 }
