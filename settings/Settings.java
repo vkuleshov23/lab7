@@ -71,6 +71,7 @@ public class Settings{
 				}
 				file.writeInt(item.getValue());
 			}
+			file.close();
 		} catch(IOException err){
 			System.out.println(err.getMessage());
 		}
