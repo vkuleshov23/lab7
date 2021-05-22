@@ -1,6 +1,10 @@
 package prog.lab7;
 import prog.lab7.settings.*;
 import prog.lab7.graph.*;
+import prog.lab7.exception.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import prog.lab6.excpt.FormattedInputException;
 
 public class main {
 	public static void main(String[] args){  //load txt , save txt , save bin, load bin
@@ -42,19 +46,25 @@ public class main {
 
 		StoringGraph graph = new StoringGraph();
 		StoringGraph graph1 = new StoringGraph();
-		
-		graph.loadFromTextFile(repos + "graphLoad.txt");
-		
-		graph.saveToBinFile(repos + "graphLoad.bin");
-		System.out.println("graph:\n" + graph);
-		graph.set(0, 1);
-		System.out.println("graph:\n" + graph);
-		graph.saveToTextFile(repos + "graphSave.txt");
+		try{
+			graph.loadFromTextFile(repos + "graphLoad.txt");
+			
+			graph.saveToBinFile(repos + "graphLoad.bin");
+			System.out.println("graph:\n" + graph);
+			graph.set(0, 1);
+			System.out.println("graph:\n" + graph);
+			graph.saveToTextFile(repos + "graphSave.txt");
 
-		graph1.loadFromBinFile(repos + "graphLoad.bin");
-		System.out.println("graph1:\n" + graph1);
-		graph1.set(2, 3);
-		System.out.println("graph1:\n" + graph1);
-		graph1.saveToBinFile(repos + "graphSave.bin");
+			graph1.loadFromBinFile(repos + "graphLoad.bin");
+			System.out.println("graph1:\n" + graph1);
+			graph1.set(2, 3);
+			System.out.println("graph1:\n" + graph1);
+			graph1.saveToBinFile(repos + "graphSave.bin");
+
+		} catch(GraphException e){
+			System.out.println("---");
+			e.getMassage();
+			e.printStackTrace();
+		}
 	}
 }

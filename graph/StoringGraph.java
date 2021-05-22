@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import prog.lab6.excpt.FormattedInputException;
 import prog.lab6.finput.*;
+import prog.lab7.exception.*;
 
 public class StoringGraph{
 	protected int[][] graph;
@@ -36,13 +37,17 @@ public class StoringGraph{
 			this.graph = new int[this.size][this.size];
 			for(int i = 0; i < this.size; i++){
 				for(int j = 0; j < this.size; j++){
-					graph[i][j] = file.readInt();
+					boolean b = file.readBoolean();
+					if(b == true){
+						graph[i][j] = 1;
+					} else {
+						graph[i][j] = 0;
+					}
 				}
 			}
 			file.close();
 		} catch(IOException err){
-        	err.printStackTrace();
-			System.out.println(err.getMessage());
+			throw new GraphException("IOException");
 		}
 	}
 	public void saveToBinFile(String filename){
@@ -51,12 +56,16 @@ public class StoringGraph{
 			file.writeInt(this.size);
 			for(int i = 0; i < this.size; i++){
 				for(int j = 0; j < this.size; j++){
-					file.writeInt(graph[i][j]);
+					if(graph[i][j] == 1){
+						file.writeBoolean(true);
+					} else{
+						file.writeBoolean(false);
+					}
 				}
 			}
 			file.close();
 		} catch(IOException err){
-			System.out.println(err.getMessage());
+			throw new GraphException("IOException");
 		}
 	}
 	public void loadFromTextFile(String filename){
@@ -67,7 +76,9 @@ public class StoringGraph{
 			if(scan.hasNext()){
 				try{
 					this.size = Integer.parseInt((String)scan.nextLine());
-				} catch (NumberFormatException nfe) {};
+				} catch (NumberFormatException nfe) {
+					throw new GraphException("NumberFormatException");
+				};
 				for(int i = 0; i < this.size; i++){
 					format += "%d";
 				}
@@ -81,15 +92,13 @@ public class StoringGraph{
 							this.graph[x][y] = (int)data[y];
 						}
 					} catch(FormattedInputException err){
-						err.getMassage();
-						err.printStackTrace();
-						java.lang.System.exit(1);
+						throw new GraphException("FormattedInputException...");
 					}
 				}
 			}
 			scan.close();
 		} catch (FileNotFoundException e) {
-        	e.printStackTrace();
+			throw new GraphException("FileNotFoundException");
 		}
 	}
 	public void saveToTextFile(String filename){
@@ -107,7 +116,8 @@ public class StoringGraph{
 			}
 			file.close();
 		} catch(IOException err){
-			System.out.println(err.getMessage());
+			throw new GraphException("IOException");
+			
 		}
 	}
 	@Override
